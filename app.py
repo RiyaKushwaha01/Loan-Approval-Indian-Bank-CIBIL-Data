@@ -22,6 +22,18 @@ if "authenticated" not in st.session_state:
 if not st.session_state["authenticated"]:
     login()
 else:
+
+        @st.cache_data
+    def load_data(file):
+        with file.File(file) as z:
+            file_names = z.namelist()
+            df = pd.read_excel(z.open([f for f in file_names if "Unseen_Dataset" in f][0]))
+        return df1
+
+    # Upload file
+    uploaded_file = st.file_uploader("Upload file", type=["xlsx"])
+    if uploaded_file:
+        df1, df2 = load_data(uploaded_file)
         
     # --- Loan Approval Prediction App ---
     st.title("Loan Approval Prediction App")
