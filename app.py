@@ -29,18 +29,17 @@ else:
         df = pd.read_excel(file)
         return df
 
-    # Upload Excel file
     uploaded_file = st.file_uploader("Upload Excel File", type=["xlsx"])
     if uploaded_file:
         df = load_data(uploaded_file)
         st.write("Sample of Uploaded Data")
         st.dataframe(df.head())
 
-    # --- Loan Approval Prediction App ---
+    # --- Input Form ---
     st.title("Loan Approval Prediction App")
     st.header("Enter Feature Values")
 
-    # Input fields for each feature
+    # User-friendly input fields
     Credit_Score = st.number_input("Credit Score", min_value=300, max_value=900, step=1)
     Total_TL = st.number_input("Total TL", step=1)
     Tot_Closed_TL = st.number_input("Total Closed TL", step=1)
@@ -55,27 +54,27 @@ else:
     PL_enq_L12m = st.number_input("PL Enquiries in Last 12M", step=1)
     enq_L3m = st.number_input("Enquiry in Last 3M", step=1)
     enq_L6m = st.number_input("Enquiry in Last 6M", step=1)
+    enq_L12m = st.number_input("Enquiry in Last 12M", step=1)
     tot_enq = st.number_input("Total Enquiry", step=1)
 
-    
-    # Collect input in a DataFrame
+    # Prepare input for the model: use exact feature names used in training
     input_data = pd.DataFrame([{
-        "Credit Score": Credit_Score,
-        "Total TL": Total_TL,
-        "Total Closed TL": Tot_Closed_TL,
-        "Age of Oldest TL": Age_Oldest_TL,
-        "Secured TL": Secured_TL,
-        "Number of standard accounts": num_std,
-        "Number of Standard Accounts in 6M": num_std_6mts,
-        "Number of Standard Accounts in 12M": num_std_12mts,
-        "Most recent delinquency level": recent_level_of_deliq,
-        "Days since the most recent enquiry": time_since_recent_enq,
-        "Personal Loan Enquiry": PL_enq,
-        "Personal Loan enquiry in Last 12 months": PL_enq_L12m,
-        "Number of standard accounts": num_std,
-        "Enquiry in Last 3M": enq_L3m,
-        "Enquiry in Last 6M": enq_L6m,
-        "Total Enquiry": tot_enq
+        "Credit_Score": Credit_Score,
+        "Total_TL": Total_TL,
+        "Tot_Closed_TL": Tot_Closed_TL,
+        "Age_Oldest_TL": Age_Oldest_TL,
+        "Secured_TL": Secured_TL,
+        "num_std": num_std,
+        "num_std_6mts": num_std_6mts,
+        "num_std_12mts": num_std_12mts,
+        "recent_level_of_deliq": recent_level_of_deliq,
+        "time_since_recent_enq": time_since_recent_enq,
+        "PL_enq": PL_enq,
+        "PL_enq_L12m": PL_enq_L12m,
+        "enq_L3m": enq_L3m,
+        "enq_L6m": enq_L6m,
+        "enq_L12m": enq_L12m,
+        "tot_enq": tot_enq
     }])
 
     # Load the model
