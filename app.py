@@ -40,41 +40,42 @@ else:
     st.header("Enter Feature Values")
 
     # User-friendly input fields
+    recent_level_of_deliq = st.number_input("Most recent delinquency level", step=1)
     Credit_Score = st.number_input("Credit Score", min_value=300, max_value=900, step=1)
-    Total_TL = st.number_input("Total TL", step=1)
-    Tot_Closed_TL = st.number_input("Total Closed TL", step=1)
-    Age_Oldest_TL = st.number_input("Age of Oldest TL", step=1)
+    tot_enq = st.number_input("Total Enquiry", step=1)
     Secured_TL = st.number_input("Secured TL", step=1)
-    num_std = st.number_input("Number of Standard Accounts", step=1)
+    PL_enq_L12m = st.number_input("PL Enquiries in Last 12M", step=1)
+    enq_L12m = st.number_input("Enquiry in Last 12M", step=1)
+    Total_TL = st.number_input("Total TL", step=1)
+    time_since_recent_enq = st.number_input("Days since the most recent enquiry.", step=1)
+    enq_L6m = st.number_input("Enquiry in Last 6M", step=1)
     num_std_6mts = st.number_input("Number of Standard Accounts in 6M", step=1)
     num_std_12mts = st.number_input("Number of Standard Accounts in 12M", step=1)
-    recent_level_of_deliq = st.number_input("Most recent delinquency level", step=1)
-    time_since_recent_enq = st.number_input("Days since the most recent enquiry.", step=1)
-    PL_enq = st.number_input("Personal Loan Enquiry", step=1)
-    PL_enq_L12m = st.number_input("PL Enquiries in Last 12M", step=1)
     enq_L3m = st.number_input("Enquiry in Last 3M", step=1)
-    enq_L6m = st.number_input("Enquiry in Last 6M", step=1)
-    enq_L12m = st.number_input("Enquiry in Last 12M", step=1)
-    tot_enq = st.number_input("Total Enquiry", step=1)
+    Age_Oldest_TL = st.number_input("Age of Oldest TL", step=1)
+    PL_enq = st.number_input("Personal Loan Enquiry", step=1)
+    Tot_Closed_TL = st.number_input("Total Closed TL", step=1)
+    num_std = st.number_input("Number of Standard Accounts", step=1)
+     
 
     # Prepare input for the model: use exact feature names used in training
     input_data = pd.DataFrame([{
+        "recent_level_of_deliq": recent_level_of_deliq,
         "Credit_Score": Credit_Score,
-        "Total_TL": Total_TL,
-        "Tot_Closed_TL": Tot_Closed_TL,
-        "Age_Oldest_TL": Age_Oldest_TL,
+        "tot_enq": tot_enq,
         "Secured_TL": Secured_TL,
-        "num_std": num_std,
+        "PL_enq_L12m": PL_enq_L12m,
+        "enq_L12m": enq_L12m,
+        "Total_TL": Total_TL,
+        "time_since_recent_enq": time_since_recent_enq,
+        "enq_L6m": enq_L6m,
         "num_std_6mts": num_std_6mts,
         "num_std_12mts": num_std_12mts,
-        "recent_level_of_deliq": recent_level_of_deliq,
-        "time_since_recent_enq": time_since_recent_enq,
-        "PL_enq": PL_enq,
-        "PL_enq_L12m": PL_enq_L12m,
         "enq_L3m": enq_L3m,
-        "enq_L6m": enq_L6m,
-        "enq_L12m": enq_L12m,
-        "tot_enq": tot_enq
+        "Age_Oldest_TL": Age_Oldest_TL,
+        "PL_enq": PL_enq,
+        "Tot_Closed_TL": Tot_Closed_TL,
+        "num_std": num_std
     }])
 
     # Load the model
