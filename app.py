@@ -32,19 +32,20 @@ else:
         st.write("Sample of Uploaded Data")
         st.dataframe(df.head())
 
-        # --- Load Model ---
+        # --- Load Model and Label Encoder ---
         try:
             with open("Model.pkl", "rb") as f:
                 model = pickle.load(f)
-        except FileNotFoundError:
-            st.error("Model file not found. Please make sure 'Model.pkl' is available in the app directory.")
+            with open("label_encoder.pkl", "rb") as f:
+                label_encoder = pickle.load(f)
+        except FileNotFoundError as e:
+            st.error(f"Missing file: {e}")
             st.stop()
 
         # --- Input Section ---
         st.title("Loan Approval Prediction")
         st.header("Enter Feature Values")
 
-        # Manual input for features (based on your model)
         input_fields = {
             "recent_level_of_deliq": st.number_input("Most recent delinquency level", step=1),
             "Credit_Score": st.number_input("Credit Score", min_value=300, max_value=900, step=1),
@@ -69,15 +70,19 @@ else:
         # --- Prediction ---
         if st.button("Predict Loan Approval"):
             try:
-                # Ensure columns are in the order model expects
+                # Ensure input features are in correct order
                 input_df = input_df[model.feature_names_in_]
-                prediction = model.predict(input_df)[0]
 
-                st.success(f"Predicted Approval Class: {prediction}")
+                # Predict numeric class
+                prediction_numeric = model.predict(input_df)[0]
+
+                # Convert numeric prediction back to label
+                prediction_label = label_encoder.inverse_transform([prediction_numeric])[0]
+
+                st.success(f"Predicted Approval Class: {prediction_label}")
             except Exception as e:
                 st.error(f"Prediction failed: {e}")
 
         st.markdown("""<hr><small>Developed with ❤️ using Streamlit</small>""", unsafe_allow_html=True)
-
     else:
         st.warning("📄 Please upload an Excel file to begin.")
