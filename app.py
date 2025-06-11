@@ -1,6 +1,5 @@
 import streamlit as st
 import pandas as pd
-import numpy as np
 import pickle
 
 # --- Login Section ---
@@ -33,17 +32,19 @@ else:
         st.write("Sample of Uploaded Data")
         st.dataframe(df.head())
 
-        # --- Load Model and Preprocessing ---
-        with open("Model.pkl", "rb") as f:
-            model = pickle.load(f)
-        # If you used a label encoder or scaler during training, load it here
-        # Example: with open("encoder.pkl", "rb") as f: encoder = pickle.load(f)
+        # --- Load Model ---
+        try:
+            with open("Model.pkl", "rb") as f:
+                model = pickle.load(f)
+        except FileNotFoundError:
+            st.error("Model file not found. Please make sure 'Model.pkl' is available in the app directory.")
+            st.stop()
 
-        # --- Input Form ---
-        st.title("Loan Approval Prediction App")
-        st.header("Enter Feature Values Manually")
+        # --- Input Section ---
+        st.title("Loan Approval Prediction")
+        st.header("Enter Feature Values")
 
-        # Replace these fields based on the notebook's feature list
+        # Manual input for features (based on your model)
         input_fields = {
             "recent_level_of_deliq": st.number_input("Most recent delinquency level", step=1),
             "Credit_Score": st.number_input("Credit Score", min_value=300, max_value=900, step=1),
@@ -65,27 +66,18 @@ else:
 
         input_df = pd.DataFrame([input_fields])
 
-        # Make predictions
+        # --- Prediction ---
         if st.button("Predict Loan Approval"):
             try:
-                # Ensure input column order matches training
+                # Ensure columns are in the order model expects
                 input_df = input_df[model.feature_names_in_]
                 prediction = model.predict(input_df)[0]
 
-                # Label explanations
-                approval_meanings = {
-                    "P1": "P1 - Best customers with high credit scores and clean repayment history.",
-                    "P2": "P2 - Good customers with minor or no risk.",
-                    "P3": "P3 - Mid-risk customers, may have had delinquencies.",
-                    "P4": "P4 - High-risk approvals – most prone to credit issues."
-                }
-
-                meaning = approval_meanings.get(prediction, "Unknown class")
-                st.success(f"Estimated Approval Class: {prediction}")
-                st.info(meaning)
+                st.success(f"Predicted Approval Class: {prediction}")
             except Exception as e:
                 st.error(f"Prediction failed: {e}")
 
         st.markdown("""<hr><small>Developed with ❤️ using Streamlit</small>""", unsafe_allow_html=True)
+
     else:
         st.warning("📄 Please upload an Excel file to begin.")
