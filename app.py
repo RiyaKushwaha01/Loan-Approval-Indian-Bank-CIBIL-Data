@@ -43,8 +43,8 @@ else:
         with open("extracted_model/Model.pkl", "rb") as f:
             bundle = joblib.load(f)
             model = bundle["model"]
-            label_encoder = bundle["encoder_Y"]
-            Selected_features = bundle["encoder_X"]
+            label_encoder = bundle["encoder_y"]
+            Selected_features = bundle["encoder_x"]
             selector_dict = bundle["selector"]
 
         # --- Input Section ---
