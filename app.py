@@ -1,6 +1,8 @@
 import streamlit as st
 import pandas as pd
 import pickle
+import zipfile
+import joblib
 
 # --- Login Section ---
 def login():
@@ -33,12 +35,21 @@ else:
         st.dataframe(df.head())
 
        # Load model and preprocessing objects
-        with open("Model.pkl", "rb") as f:
-        bundle = joblib.load(f)
-        model = bundle["model"]
-        label_encoder = bundle["encoder_Y"]
-        Selected_features = bundle["encoder_X"]
-        selector_dict = bundle["selector"]
+        # Path to the ZIP file
+        zip_path = "Model.zip"
+
+        # Extract the contents of the ZIP file
+        with zipfile.ZipFile(zip_path, 'r') as zip_ref:
+        zip_ref.extractall("extracted_model")  # Extract to a temporary folder
+        
+# Load model and preprocessing objects
+with open("extracted_model/Model.pkl", "rb") as f:
+    bundle = joblib.load(f)
+    model = bundle["model"]
+    label_encoder = bundle["encoder_Y"]
+    Selected_features = bundle["encoder_X"]
+    selector_dict = bundle["selector"]
+
         
         # --- Input Section ---
         st.title("Loan Approval Prediction")
