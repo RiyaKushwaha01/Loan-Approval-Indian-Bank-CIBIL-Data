@@ -32,16 +32,14 @@ else:
         st.write("Sample of Uploaded Data")
         st.dataframe(df.head())
 
-        # --- Load Model and Label Encoder ---
-        try:
-            with open("Model.pkl", "rb") as f:
-                model = pickle.load(f)
-            with open("label_encoder.pkl", "rb") as f:
-                label_encoder = pickle.load(f)
-        except FileNotFoundError as e:
-            st.error(f"Missing file: {e}")
-            st.stop()
-
+       # Load model and preprocessing objects
+        with open("Model.pkl", "rb") as f:
+        bundle = joblib.load(f)
+        model = bundle["model"]
+        label_encoder = bundle["encoder_Y"]
+        Selected_features = bundle["encoder_X"]
+        selector_dict = bundle["selector"]
+        
         # --- Input Section ---
         st.title("Loan Approval Prediction")
         st.header("Enter Feature Values")
