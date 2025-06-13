@@ -5,6 +5,7 @@ matplotlib
 seaborn
 scikit-learn
 openpyxl
-xgboost
+random forest
 imbalanced-learn
 joblib
+zip
