@@ -50,17 +50,18 @@ else:
     st.header("Enter Feature Values")
 
     input_fields = {
-        "tot_enq": st.number_input("Total Enquiry", step=1),
-        "Age_Oldest_TL": st.number_input("Age of Oldest TL", step=1),
-        "time_since_recent_enq": st.number_input("Days since most recent enquiry", step=1),
-        "num_std": st.number_input("Number of Standard Accounts", step=1),
-        "enq_L12m": st.number_input("Enquiry in Last 12M", step=1),
         "Total_TL": st.number_input("Total TL", step=1),
         "PL_enq_L12m": st.number_input("PL Enquiries in Last 12M", step=1),
-        "AGE" : st.number_input("Age", step=1),
         "enq_L3m": st.number_input("Enquiry in Last 3M", step=1),
+        "AGE" : st.number_input("Age", step=1),
+        "num_std": st.number_input("Number of Standard Accounts", step=1),
+        "tot_enq": st.number_input("Total Enquiry", step=1),
+        "time_since_recent_enq": st.number_input("Days since most recent enquiry", step=1),
         "Secured_TL": st.number_input("Secured TL", step=1),
-        "Credit_Score": st.number_input("Credit Score", min_value=300, max_value=900, step=1)
+        "pct_currentBal_all_TL" : st.number_input("Percentage of Current Balance",step=1),
+        "Age_Oldest_TL": st.number_input("Age of Oldest TL", step=1),
+        "Credit_Score": st.number_input("Credit Score", min_value=300, max_value=900, step=1),
+        "enq_L12m": st.number_input("Enquiry in Last 12M", step=1)
     }
 
     input_df = pd.DataFrame([input_fields])
