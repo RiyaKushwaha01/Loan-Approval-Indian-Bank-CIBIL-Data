@@ -28,14 +28,10 @@ else:
         return pd.read_excel(file)
 
     uploaded_file = st.file_uploader("Upload Excel File", type=["xlsx"])
-
-    # --- Optional Display of Uploaded Data ---
     if uploaded_file:
         df = load_data(uploaded_file)
         st.write("Sample of Uploaded Data")
         st.dataframe(df.head())
-    else:
-        st.warning("📄 Please upload an Excel file to begin.")
 
     # --- Load model and preprocessing objects (outside of file check) ---
     zip_path = "Model.zip"
