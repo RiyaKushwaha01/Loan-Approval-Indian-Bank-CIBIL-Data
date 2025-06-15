@@ -58,7 +58,7 @@ else:
         "tot_enq": st.number_input("Total Enquiry", step=1),
         "time_since_recent_enq": st.number_input("Days since most recent enquiry", step=1),
         "Secured_TL": st.number_input("Secured TL", step=1),
-        "pct_currentBal_all_TL" : st.number_input("Percentage of Current Balance",step=1),
+        "pct_currentBal_all_TL" : st.number_input("Percentage of Current Balance",step=0.1),
         "Age_Oldest_TL": st.number_input("Age of Oldest TL", step=1),
         "Credit_Score": st.number_input("Credit Score", min_value=300, max_value=900, step=1),
         "enq_L12m": st.number_input("Enquiry in Last 12M", step=1)
