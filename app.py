@@ -28,20 +28,35 @@ else:
     st.sidebar.title("Help Box")
     st.sidebar.markdown("""
     **📄 Total TL**: Total number of credit accounts held.  
+    
     **📝 PL Enquiries in Last 12M**: Personal loan enquiries in the past year.  
+    
     **📆 Enquiry in Last 3M**: Total credit enquiries in the last 3 months.  
+    
     **🎂 Age**: Applicant's age in years.  
-    **✅ Number of Standard Accounts**: Accounts in good standing.  
+    
+    **✅ Number of Standard Accounts**: Accounts in good standing. 
+    
     **🔍 Total Enquiry**: Total number of enquiries made.  
+    
     **⏱️ Time since recent enquiry**: Days since last enquiry.  
+    
     **🔐 Secured TL**: Loans backed by assets (house, gold, etc.).  
+    
     **📊 % of Current Balance**: Unpaid loan balance as a % of total.  
+    
     **📊 Age of Oldest TL**: How old the first loan account is (in months).  
+    
     **💳 Credit Score**: A score (300–900) showing repayment ability.  
+
     **📆 Enquiry in Last 12M**: All enquiries in the past 12 months.  
+    
     **🟢 P1**: Excellent customers (very low risk).  
+    
     **🟡 P2**: Good customers (low risk).  
+    
     **🟠 P3**: Mid-risk customers (some past issues).  
+    
     **🔴 P4**: High-risk customers (likely to default).  
     """)
 
