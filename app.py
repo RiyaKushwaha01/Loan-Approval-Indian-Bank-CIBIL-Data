@@ -23,6 +23,17 @@ if not st.session_state["authenticated"]:
 else:
     st.set_page_config(page_title="Loan Approval Prediction App", layout="wide")
 
+    # Sidebar with help description
+    st.sidebar.title("Approval Flag Help")
+    st.sidebar.info(
+        """
+        **P1**: Best customers with high credit scores and clean repayment history.  
+        **P2**: Good customers with minor and no risk.  
+        **P3**: Mid-risk customers, may have had delinquencies.  
+        **P4**: High-risk approvals – most prone to credit issues.
+        """
+    )
+
     @st.cache_data
     def load_data(file):
         return pd.read_excel(file)
