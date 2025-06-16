@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import zipfile
 import joblib
+import os
 
 # --- Login Section ---
 def login():
@@ -23,55 +24,26 @@ if not st.session_state["authenticated"]:
 else:
     st.set_page_config(page_title="Loan Approval Prediction App", layout="wide")
 
-    # Sidebar with help description
+    # --- Sidebar Help Box ---
     st.sidebar.title("Help Box")
-    st.sidebar.info(
-        """
-        **📄 Total TL**: Total number of trade lines (credit accounts) held.
-        
-        **📝 PL Enquiries in Last 12M** : Personal loan enquiries in last 12 months(1 year).
-        
-        **📆 Enquiry in Last 3M** : Total enquiries in the last 3 months.
-        
-        **🎂 Age** : Age in years.
-        
-        **✅ Number of Standard Accounts** : Number of "standard" accounts (good standing).
-        
-        **🔍 Total Enquiry** : Total credit enquiries.
-        
-        **⏱️ Time since recent enquiry** : Days since the most recent enquiry.
-        
-        **🔐 Secured TL** : Secured Term Loan 
-        
-        (- A secured TL is a loan taken by giving something valuable as a guarantee — like your house papers, car, gold, or fixed deposit.
-        
-         - If you don’t repay the loan, the bank can take that item to get back its money.)
-         
-        **📊 Percentage of Current Balance** : How much loan amount is still unpaid, shown in percentage.
-        
-        **📊 Age of Oldest TL** : The number of months or years since the borrower opened their very first loan account(in months).
-        
-        **💳 Credit Score** : A number that shows how good applicant are at paying back loans and credit card bills.
-        
-        **📆 Enquiry in Last 12M** : Total enquiries in the last 12 months or 1 year.
-        
-        **🟢 P1**: Best customers with high credit scores and clean repayment history. 
-        
-        (Very low risk – highly trustworthy)
-        
-        **🟡 P2**: Good customers with minor and no risk.  
-        
-        (Generally reliable with small issues, if any)
-        
-        **🟠 P3**: Mid-risk customers, may have had delinquencies.  
-        
-        (Moderate credit risk – needs review)
-        
-        **🔴 P4**: High-risk approvals – most prone to credit issues. 
-        
-        (Very risky – careful evaluation needed)
-        """
-    )
+    st.sidebar.markdown("""
+    **📄 Total TL**: Total number of credit accounts held.  
+    **📝 PL Enquiries in Last 12M**: Personal loan enquiries in the past year.  
+    **📆 Enquiry in Last 3M**: Total credit enquiries in the last 3 months.  
+    **🎂 Age**: Applicant's age in years.  
+    **✅ Number of Standard Accounts**: Accounts in good standing.  
+    **🔍 Total Enquiry**: Total number of enquiries made.  
+    **⏱️ Time since recent enquiry**: Days since last enquiry.  
+    **🔐 Secured TL**: Loans backed by assets (house, gold, etc.).  
+    **📊 % of Current Balance**: Unpaid loan balance as a % of total.  
+    **📊 Age of Oldest TL**: How old the first loan account is (in months).  
+    **💳 Credit Score**: A score (300–900) showing repayment ability.  
+    **📆 Enquiry in Last 12M**: All enquiries in the past 12 months.  
+    **🟢 P1**: Excellent customers (very low risk).  
+    **🟡 P2**: Good customers (low risk).  
+    **🟠 P3**: Mid-risk customers (some past issues).  
+    **🔴 P4**: High-risk customers (likely to default).  
+    """)
 
     @st.cache_data
     def load_data(file):
@@ -83,17 +55,22 @@ else:
         st.write("Sample of Uploaded Data")
         st.dataframe(df.head())
 
-    # --- Load model and preprocessing objects (outside of file check) ---
-    zip_path = "Model.zip"
-    with zipfile.ZipFile(zip_path, 'r') as zip_ref:
-        zip_ref.extractall("extracted_model")
+    # --- Load model only once using cache ---
+    @st.cache_resource
+    def load_model_bundle():
+        # Extract ZIP once only
+        if not os.path.exists("extracted_model"):
+            with zipfile.ZipFile("Model.zip", 'r') as zip_ref:
+                zip_ref.extractall("extracted_model")
 
-    with open("extracted_model/Model.pkl", "rb") as f:
-        bundle = joblib.load(f)
-        model = bundle["model"]
-        label_encoder = bundle["encoder_y"]
-        Selected_features = bundle["encoder_x"]
-        selector_dict = bundle["selector"]
+        with open("extracted_model/Model.pkl", "rb") as f:
+            return joblib.load(f)
+
+    bundle = load_model_bundle()
+    model = bundle["model"]
+    label_encoder = bundle["encoder_y"]
+    Selected_features = bundle["encoder_x"]
+    selector_dict = bundle["selector"]
 
     # --- Input Section ---
     st.title("Loan Approval Prediction")
@@ -103,12 +80,12 @@ else:
         "Total_TL": st.number_input("Total TL", step=1),
         "PL_enq_L12m": st.number_input("PL Enquiries in Last 12M", step=1),
         "enq_L3m": st.number_input("Enquiry in Last 3M", step=1),
-        "AGE" : st.number_input("Age", step=1),
+        "AGE": st.number_input("Age", step=1),
         "num_std": st.number_input("Number of Standard Accounts", step=1),
         "tot_enq": st.number_input("Total Enquiry", step=1),
         "time_since_recent_enq": st.number_input("Time since recent enquiry", step=1),
         "Secured_TL": st.number_input("Secured TL", step=1),
-        "pct_currentBal_all_TL" : st.number_input("Percentage of Current Balance",step=0.1),
+        "pct_currentBal_all_TL": st.number_input("Percentage of Current Balance", step=0.1),
         "Age_Oldest_TL": st.number_input("Age of Oldest TL", step=1),
         "Credit_Score": st.number_input("Credit Score", min_value=300, max_value=900, step=1),
         "enq_L12m": st.number_input("Enquiry in Last 12M", step=1)
@@ -126,4 +103,4 @@ else:
         except Exception as e:
             st.error(f"Prediction failed: {e}")
 
-    st.markdown("""<hr><small>Developed with ❤️ using Streamlit</small>""", unsafe_allow_html=True)
+    st.markdown("<hr><small>Developed with ❤️ using Streamlit</small>", unsafe_allow_html=True)
