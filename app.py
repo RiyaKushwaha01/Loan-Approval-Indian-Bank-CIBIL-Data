@@ -24,13 +24,30 @@ else:
     st.set_page_config(page_title="Loan Approval Prediction App", layout="wide")
 
     # Sidebar with help description
-    st.sidebar.title("Approval Flag Help")
+    st.sidebar.title("Help Box")
     st.sidebar.info(
         """
-        **P1**: Best customers with high credit scores and clean repayment history.  
-        **P2**: Good customers with minor and no risk.  
-        **P3**: Mid-risk customers, may have had delinquencies.  
-        **P4**: High-risk approvals – most prone to credit issues.
+        **📄 Total TL**: Total number of trade lines (credit accounts) held.
+        **📝 PL Enquiries in Last 12M** : Personal loan enquiries in last 12 months(1 year).
+        **📆 Enquiry in Last 3M** : Total enquiries in the last 3 months.
+        **🎂 Age** : Age in years.
+        **✅ Number of Standard Accounts** : Number of "standard" accounts (good standing).
+        **🔍 Total Enquiry** : Total credit enquiries.
+        **⏱️ Time since recent enquiry** : Days since the most recent enquiry.
+        **🔐 Secured TL** : Secured Term Loan (- A secured TL is a loan taken by giving something valuable as a guarantee — like your house papers, car, gold, or fixed deposit.
+            - If you don’t repay the loan, the bank can take that item to get back its money.)
+        **📊 Percentage of Current Balance** : How much loan amount is still unpaid, shown in percentage.
+        **📊 Age of Oldest TL** : The number of months or years since the borrower opened their very first loan account(in months).
+        **💳 Credit Score** : A number that shows how good applicant are at paying back loans and credit card bills.
+        **📆 Enquiry in Last 12M** : Total enquiries in the last 12 months or 1 year.
+        **🟢 P1**: Best customers with high credit scores and clean repayment history. 
+        (Very low risk – highly trustworthy)
+        **🟡 P2**: Good customers with minor and no risk.  
+        (Generally reliable with small issues, if any)
+        **🟠 P3**: Mid-risk customers, may have had delinquencies.  
+        (Moderate credit risk – needs review)
+        **🔴 P4**: High-risk approvals – most prone to credit issues. 
+        (Very risky – careful evaluation needed)
         """
     )
 
@@ -67,7 +84,7 @@ else:
         "AGE" : st.number_input("Age", step=1),
         "num_std": st.number_input("Number of Standard Accounts", step=1),
         "tot_enq": st.number_input("Total Enquiry", step=1),
-        "time_since_recent_enq": st.number_input("Days since most recent enquiry", step=1),
+        "time_since_recent_enq": st.number_input("Time since recent enquiry", step=1),
         "Secured_TL": st.number_input("Secured TL", step=1),
         "pct_currentBal_all_TL" : st.number_input("Percentage of Current Balance",step=0.1),
         "Age_Oldest_TL": st.number_input("Age of Oldest TL", step=1),
